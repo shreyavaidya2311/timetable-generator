@@ -1,13 +1,14 @@
+from fastapi.middleware.cors import CORSMiddleware
+from model import Course
 from fastapi import FastAPI, HTTPException
 import motor.motor_asyncio
+import uvicorn
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017/timetable')
+client = motor.motor_asyncio.AsyncIOMotorClient(
+    'mongodb://localhost:27017/timetable')
 database = client.timetable
 courses_collection = database.courses
 
-from model import Course
-
-from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
@@ -22,12 +23,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+if __name__ == '__main__':
+    uvicorn.run("app:app", host="localhost",
+                port=8000, reload=True, debug=True)
+
+
 @app.get("/get-courses")
 async def get_todo():
     courses = []
     cursor = courses_collection.find({})
     async for document in cursor:
-        courses.append(Course(document))
+        courses.append(Course(**document))
     return courses
 
 
@@ -36,18 +42,3 @@ async def post_todo(course: Course):
     document = course.dict()
     result = await courses_collection.insert_one(document)
     return document
-
-
-# @app.put("/api/todo/{title}/", response_model=Todo)
-# async def put_todo(title: str, desc: str):
-#     response = await update_todo(title, desc)
-#     if response:
-#         return response
-#     raise HTTPException(404, f"There is no todo with the title {title}")
-
-# @app.delete("/api/todo/{title}")
-# async def delete_todo(title):
-#     response = await remove_todo(title)
-#     if response:
-#         return "Successfully deleted todo"
-#     raise HTTPException(404, f"There is no todo with the title {title}")
