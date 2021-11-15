@@ -17,6 +17,7 @@ import {
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { AddCircleOutlined } from "@mui/icons-material";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const AddConstraints = () => {
@@ -191,7 +192,37 @@ const AddConstraints = () => {
     axios
       .post("http://localhost:8000/add-constraints", body)
       .then(() => {
-        alert("Constraints added successfully!");
+        Swal.fire({
+          text: "Constraints added successfully!",
+          icon: "success",
+        });
+        setMonday(false);
+        setTuesday(false);
+        setWednesday(false);
+        setThursday(false);
+        setFriday(false);
+        setSaturday(false);
+        setSunday(false);
+        setStartMondayHour(new Date());
+        setEndMondayHour(new Date());
+        setStartTuesdayHour(new Date());
+        setEndTuesdayHour(new Date());
+        setStartWednesdayHour(new Date());
+        setEndWednesdayHour(new Date());
+        setEndThursdayHour(new Date());
+        setStartThursdayHour(new Date());
+        setEndFridayHour(new Date());
+        setStartFridayHour(new Date());
+        setEndSaturdayHour(new Date());
+        setStartSaturdayHour(new Date());
+        setEndSundayHour(new Date());
+        setStartSundayHour(new Date());
+        setCheckedA(false);
+        setCheckedB(false);
+        setSub1("");
+        setSub2("");
+        setnSub1("");
+        setnSub2("");
       })
       .catch((e) => console.log(e));
   };

@@ -10,6 +10,7 @@ import {
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { AddCircleOutlined } from "@mui/icons-material";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const AddCourses = () => {
@@ -28,7 +29,10 @@ const AddCourses = () => {
 
   const handleSubmit = () => {
     if (name === "" || lecturesno === 0 || duration === 0 || iname === "") {
-      alert("Enter all values!");
+      Swal.fire({
+        text: "Enter all values!",
+        icon: "error",
+      });
     } else {
       var body = {
         name: name,
@@ -41,7 +45,10 @@ const AddCourses = () => {
       axios
         .post("http://localhost:8000/add-course", body)
         .then(() => {
-          alert("Course registered successfully!");
+          Swal.fire({
+            text: "Course registered successfully!",
+            icon: "success",
+          });
           setName("");
           setDuration(0);
           setLecturesNo(0);
