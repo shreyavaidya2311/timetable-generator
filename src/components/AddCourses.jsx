@@ -10,6 +10,7 @@ import {
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { AddCircleOutlined } from "@mui/icons-material";
+import axios from "axios";
 
 const AddCourses = () => {
   const [name, setName] = useState("");
@@ -23,6 +24,33 @@ const AddCourses = () => {
   };
   const handleEnd = (newValue) => {
     setEndHour(newValue);
+  };
+
+  const handleSubmit = () => {
+    if (name === "" || lecturesno === 0 || duration === 0 || iname === "") {
+      alert("Enter all values!");
+    } else {
+      var body = {
+        name: name,
+        lectureno: lecturesno,
+        duration: duration,
+        instructor_name: iname,
+        start_hr: startHour.getHours(),
+        end_hr: endHour.getHours(),
+      };
+      axios
+        .post("http://localhost:8000/add-course", body)
+        .then(() => {
+          alert("Course registered successfully!");
+          setName("");
+          setDuration(0);
+          setLecturesNo(0);
+          setIName("");
+          setStartHour(new Date());
+          setEndHour(new Date());
+        })
+        .catch((e) => console.log(e));
+    }
   };
 
   return (
@@ -127,6 +155,7 @@ const AddCourses = () => {
                 startIcon={<AddCircleOutlined />}
                 variant="outlined"
                 fullWidth
+                onClick={handleSubmit}
               >
                 Add Course
               </Button>
