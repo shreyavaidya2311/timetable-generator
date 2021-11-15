@@ -12,9 +12,11 @@ import {
   FormControlLabel,
   Autocomplete,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { AddCircleOutlined } from "@mui/icons-material";
 import axios from "axios";
 
 const AddConstraints = () => {
@@ -44,6 +46,10 @@ const AddConstraints = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [sub1, setSub1] = useState("");
+  const [sub2, setSub2] = useState("");
+  const [nsub1, setnSub1] = useState("");
+  const [nsub2, setnSub2] = useState("");
 
   const handleMondayStart = (newValue) => {
     setStartMondayHour(newValue);
@@ -100,6 +106,96 @@ const AddConstraints = () => {
   const handleSundayEnd = (newValue) => {
     setEndSundayHour(newValue);
   };
+
+  const handleSubmit = () => {
+    var working_days = [];
+    if (monday) {
+      working_days.push({
+        day: "Monday",
+        start_hr: startMondayHour.getHours(),
+        end_hr: endMondayHour.getHours(),
+        total_hours:
+          parseInt(endMondayHour.getHours()) -
+          parseInt(startMondayHour.getHours()),
+      });
+    }
+    if (tuesday) {
+      working_days.push({
+        day: "Tuesday",
+        start_hr: startTuesdayHour.getHours(),
+        end_hr: endTuesdayHour.getHours(),
+        total_hours:
+          parseInt(endTuesdayHour.getHours()) -
+          parseInt(startTuesdayHour.getHours()),
+      });
+    }
+    if (wednesday) {
+      working_days.push({
+        day: "Wednesday",
+        start_hr: startWednesdayHour.getHours(),
+        end_hr: endWednesdayHour.getHours(),
+        total_hours:
+          parseInt(endWednesdayHour.getHours()) -
+          parseInt(startWednesdayHour.getHours()),
+      });
+    }
+    if (thursday) {
+      working_days.push({
+        day: "Thursday",
+        start_hr: startThursdayHour.getHours(),
+        end_hr: endThursdayHour.getHours(),
+        total_hours:
+          parseInt(endThursdayHour.getHours()) -
+          parseInt(startThursdayHour.getHours()),
+      });
+    }
+    if (friday) {
+      working_days.push({
+        day: "Friday",
+        start_hr: startFridayHour.getHours(),
+        end_hr: endFridayHour.getHours(),
+        total_hours:
+          parseInt(endFridayHour.getHours()) -
+          parseInt(startFridayHour.getHours()),
+      });
+    }
+    if (saturday) {
+      working_days.push({
+        day: "Saturday",
+        start_hr: startSaturdayHour.getHours(),
+        end_hr: endSaturdayHour.getHours(),
+        total_hours:
+          parseInt(endSaturdayHour.getHours()) -
+          parseInt(startSaturdayHour.getHours()),
+      });
+    }
+    if (sunday) {
+      working_days.push({
+        day: "Sunday",
+        start_hr: startSundayHour.getHours(),
+        end_hr: endSundayHour.getHours(),
+        total_hours:
+          parseInt(endSundayHour.getHours()) -
+          parseInt(startSundayHour.getHours()),
+      });
+    }
+
+    var consecutive_subjects = [sub1, sub2];
+    var non_consecutive_subjects = [nsub1, nsub2];
+    var body = {
+      working_days: working_days,
+      consecutive_subjects: consecutive_subjects,
+      non_consecutive_subjects: non_consecutive_subjects,
+    };
+    console.log(body);
+    axios
+      .post("http://localhost:8000/add-constraints", body)
+      .then(() => {
+        alert("Constraints added successfully!");
+      })
+      .catch((e) => console.log(e));
+  };
+
   useEffect(() => {
     axios.get("http://localhost:8000/get-courses").then((res) => {
       setData(res.data);
@@ -490,6 +586,8 @@ const AddConstraints = () => {
                       <Autocomplete
                         disablePortal
                         options={subjects}
+                        value={nsub1}
+                        onInputChange={(event, value) => setnSub1(value)}
                         renderInput={(params) => (
                           <TextField {...params} label="Subject 1" />
                         )}
@@ -499,6 +597,8 @@ const AddConstraints = () => {
                       <Autocomplete
                         disablePortal
                         options={subjects}
+                        value={nsub2}
+                        onInputChange={(event, value) => setnSub2(value)}
                         renderInput={(params) => (
                           <TextField {...params} label="Subject 2" />
                         )}
@@ -527,6 +627,8 @@ const AddConstraints = () => {
                       <Autocomplete
                         disablePortal
                         options={subjects}
+                        value={sub1}
+                        onInputChange={(event, value) => setSub1(value)}
                         renderInput={(params) => (
                           <TextField {...params} label="Subject 1" />
                         )}
@@ -536,6 +638,8 @@ const AddConstraints = () => {
                       <Autocomplete
                         disablePortal
                         options={subjects}
+                        value={sub2}
+                        onInputChange={(event, value) => setSub2(value)}
                         renderInput={(params) => (
                           <TextField {...params} label="Subject 2" />
                         )}
@@ -543,6 +647,18 @@ const AddConstraints = () => {
                     </Grid>
                   </>
                 ) : null}
+              </Grid>
+              <br />
+              <Grid item xs={12} sm={12}>
+                <Button
+                  color="primary"
+                  startIcon={<AddCircleOutlined />}
+                  variant="outlined"
+                  fullWidth
+                  onClick={handleSubmit}
+                >
+                  Add Constraints
+                </Button>
               </Grid>
             </Paper>
           </Container>
