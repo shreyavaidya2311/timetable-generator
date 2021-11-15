@@ -1,6 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
-from model import Course
-from fastapi import FastAPI, HTTPException
+from model import Constraint, Course, CreateConstraint, CreateCourse
+from fastapi import FastAPI
 import motor.motor_asyncio
 import uvicorn
 
@@ -8,6 +8,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(
     'mongodb://localhost:27017/timetable')
 database = client.timetable
 courses_collection = database.courses
+constraints_collection = database.constraints
 
 app = FastAPI()
 
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 
 
 @app.get("/get-courses")
-async def get_todo():
+async def get_courses():
     courses = []
     cursor = courses_collection.find({})
     async for document in cursor:
@@ -37,8 +38,24 @@ async def get_todo():
     return courses
 
 
+@app.get("/get-constraints")
+async def get_constraints():
+    constraints = []
+    cursor = constraints_collection.find({})
+    async for document in cursor:
+        constraints.append(Constraint(**document))
+    return constraints
+
+
 @app.post("/add-course", response_model=Course)
-async def post_todo(course: Course):
+async def post_course(course: CreateCourse):
     document = course.dict()
-    result = await courses_collection.insert_one(document)
+    await courses_collection.insert_one(document)
+    return document
+
+
+@app.post("/add-constraints", response_model=Constraint)
+async def post_constraints(constraint: CreateConstraint):
+    document = constraint.dict()
+    await constraints_collection.insert_one(document)
     return document
