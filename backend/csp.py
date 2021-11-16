@@ -1,7 +1,5 @@
 from constraint import *
 from typing import Dict, List
-import pprint
-import json
 
 
 def get_time_slots(slot_dict, start_times) -> List[str]:
@@ -225,7 +223,6 @@ def generate(constraints, courses) -> Dict[str, str]:
     'W6': 'PSE'}
     '''
     if solution is not None:
-        pprint.pprint(solution)
         resp_data = {'monday': [], 'tuesday': [], 'wednesday': [],
                      'thursday': [], 'friday': [], 'saturday': [], 'sunday': []}
         for key, value in solution.items():
@@ -233,7 +230,7 @@ def generate(constraints, courses) -> Dict[str, str]:
                 'id': 1,
                 'name': value,
                 'type': 'custom',
-                'startTime': f'2018-02-25T{slot_time[key]}:00:00',
-                'endTime': f'2018-02-25T{slot_time[key] + 1 }:00:00'
+                'startTime': f'2018-02-25T{str(slot_time[key]).zfill(2)}:00:00',
+                'endTime': f'2018-02-25T{str(slot_time[key]+1).zfill(2)}:00:00'
             })
         return resp_data

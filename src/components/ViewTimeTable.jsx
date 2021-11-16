@@ -17,14 +17,14 @@ const ViewTimeTable = () => {
             temp[key] = [];
           }
 
-          let internal_tmp = value.map((elem) => ({
-            ...elem,
-            startTime: new Date(elem.startTime),
-            endTime: new Date(elem.endTime),
-          }));
+          let internal_tmp = value.map((elem) => {
+            let tmp = elem;
+            tmp.startTime = new Date(elem.startTime);
+            tmp.endTime = new Date(elem.endTime);
+            return tmp;
+          });
           temp[key] = internal_tmp;
         }
-        console.log(temp);
         setData(temp);
         setLoading(false);
       })
