@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+## Time Table Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+_Time Table Generator_ is a dynamic system that schedules the slots and the teachers for a particular subject and day according to given constraints by the user.
+This has been done by modelling a Constraint Satisfaction Problem with the inputs and constraints given by the user and outputting a valid timetable that adheres to all constraints.
 
-## Available Scripts
+## About the Constraint Satisfaction Problem
 
-In the project directory, you can run:
+- **Variables**: Set of available time-slots
+- **Domain**: Set of all subjects available for scheduling
 
-### `npm start`
+### Constraints Implemented
+- No clash in timings between 2 subjects
+- Subjects that have more than 1 hour per lecture scheduled together
+- Teachers working hours considered
+- Two subjects can be scheduled to be non-consecutive 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Input taken from user
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Course Details**
+  1. Name of course
+  2. Name of instructor
+  3. Lectures per week
+  4. Duration of one lecture/lab
+  5. Working hours of instructor
 
-### `npm test`
+- **Overall Constraints**
+  1. Working hours
+  2. Working days
+  3. Two subjects which cannot be scheduled consecutively
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tech Stack
 
-### `npm run build`
+<img width="650px" src="https://user-images.githubusercontent.com/56782318/141955813-15e0340d-72a6-4a49-afd0-40513cba9673.png"/>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screenshots
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img width="900px" src="https://user-images.githubusercontent.com/56782318/141957853-b9f67c46-2327-4c65-bd6b-288707c9917f.png"/>
+<img width="900px" src="https://user-images.githubusercontent.com/56782318/141957891-8aa7cd5f-62b9-4680-a312-59307e184a4f.png"/>
+<img width="900px" src="https://user-images.githubusercontent.com/56782318/141958163-f2654097-9f44-4a5a-a311-3e48e77b168d.png"/>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Clone the repository
+```
+git clone https://github.com/shreyavaidya2311/timetable-generator.git
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Installing dependencies
+```
+npm i
+cd backend & pip3 install -r requirements.txt
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+3. Run the frontend (http://localhost:3000/)
+```
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+4. Run the backend
+```
+cd backend
+python3 app.py
+```
 
-## Learn More
+## Contributors
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- <a href="https://github.com/shreyavaidya2311">Shreya Vaidya</a>
+- <a href="https://github.com/sameerkavthekar">Sameer Kavthekar</a>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
