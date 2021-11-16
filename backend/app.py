@@ -1,4 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import HTMLResponse
+from csp import generate
 from model import Constraint, Course, CreateConstraint, CreateCourse
 from fastapi import FastAPI
 import motor.motor_asyncio
@@ -59,3 +61,24 @@ async def post_constraints(constraint: CreateConstraint):
     document = constraint.dict()
     await constraints_collection.insert_one(document)
     return document
+
+
+@app.get("/generate-timetable")
+async def generate_timetable():
+    constraints = []
+    cursor = constraints_collection.find({})
+    async for document in cursor:
+        constraints.append(Constraint(**document))
+
+    courses = []
+    cursor = courses_collection.find({})
+    async for document in cursor:
+        courses.append(Course(**document))
+
+    if constraints == [] or courses == []:
+        return HTMLResponse(status_code=400)
+
+    courses = [item.dict() for item in courses]
+
+    data = generate(constraints[-1].dict(), courses)
+    return data

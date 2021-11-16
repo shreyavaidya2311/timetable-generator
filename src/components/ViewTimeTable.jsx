@@ -11,7 +11,21 @@ const ViewTimeTable = () => {
     axios
       .get("http://localhost:8000/generate-timetable")
       .then((res) => {
-        setData(res.data);
+        let temp = {};
+        for (let [key, value] of Object.entries(res.data)) {
+          if (value === []) {
+            temp[key] = [];
+          }
+
+          let internal_tmp = value.map((elem) => ({
+            ...elem,
+            startTime: new Date(elem.startTime),
+            endTime: new Date(elem.endTime),
+          }));
+          temp[key] = internal_tmp;
+        }
+        console.log(temp);
+        setData(temp);
         setLoading(false);
       })
       .catch((e) => console.log(e));
