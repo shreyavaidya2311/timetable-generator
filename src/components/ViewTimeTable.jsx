@@ -1,13 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Timetable from "react-timetable-events";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Grid } from "@mui/material";
 
 const ViewTimeTable = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [clicked, setClicked] = useState(false);
 
-  useEffect(() => {
+  const getTimeTable = () => {
+    setClicked(true);
     axios
       .get("http://localhost:8000/generate-timetable")
       .then((res) => {
@@ -29,48 +31,23 @@ const ViewTimeTable = () => {
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  }, []);
+  };
   return (
     <>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <Timetable
-          events={data}
-          // events={{
-          //   monday: [
-          //     {
-          //       id: 1,
-          //       name: "Custom Event 1",
-          //       type: "custom",
-          //       startTime: new Date("2018-02-25T11:30:00"),
-          //       endTime: new Date("2018-02-25T13:30:00"),
-          //     },
-          //     {
-          //       id: 1,
-          //       name: "Custom Event 2",
-          //       type: "custom",
-          //       startTime: new Date("2018-02-25T14:30:00"),
-          //       endTime: new Date("2018-02-25T16:30:00"),
-          //     },
-          //   ],
-          //   tuesday: [
-          //     {
-          //       id: 1,
-          //       name: "Custom Event 1",
-          //       type: "custom",
-          //       startTime: new Date("2018-02-25T11:30:00"),
-          //       endTime: new Date("2018-02-25T13:30:00"),
-          //     },
-          //   ],
-          //   wednesday: [],
-          //   thursday: [],
-          //   friday: [],
-          //   saturday: [],
-          //   sunday: [],
-          // }}
-        />
-      )}
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={12}>
+          <Button onClick={getTimeTable} variant="contained">
+            Generate Time Table
+          </Button>
+        </Grid>
+        {clicked ? (
+          <>
+            <Grid item xs={12} sm={12}>
+              {loading ? <CircularProgress /> : <Timetable events={data} />}
+            </Grid>
+          </>
+        ) : null}
+      </Grid>
     </>
   );
 };

@@ -43,9 +43,9 @@ const AddConstraints = () => {
   const [endSundayHour, setEndSundayHour] = useState(new Date());
   const [startSundayHour, setStartSundayHour] = useState(new Date());
   const [checkedA, setCheckedA] = useState(false);
+  // eslint-disable-next-line
   const [checkedB, setCheckedB] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [sub1, setSub1] = useState("");
   const [sub2, setSub2] = useState("");
@@ -229,9 +229,9 @@ const AddConstraints = () => {
 
   useEffect(() => {
     axios.get("http://localhost:8000/get-courses").then((res) => {
-      setData(res.data);
       setLoading(false);
       var temp_subjects = [];
+      // eslint-disable-next-line
       res.data.map((item) => {
         temp_subjects.push({ label: item.name, value: item.name });
       });
@@ -630,47 +630,6 @@ const AddConstraints = () => {
                         options={subjects}
                         value={nsub2}
                         onInputChange={(event, value) => setnSub2(value)}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Subject 2" />
-                        )}
-                      />
-                    </Grid>
-                  </>
-                ) : null}
-                <Grid item xs={12} sm={12}>
-                  <FormGroup>
-                    <center>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={checkedB}
-                            onChange={() => setCheckedB(!checkedB)}
-                          />
-                        }
-                        label="Two subjects which have to be consecutive"
-                      />
-                    </center>
-                  </FormGroup>
-                </Grid>
-                {checkedB ? (
-                  <>
-                    <Grid item xs={12} sm={6}>
-                      <Autocomplete
-                        disablePortal
-                        options={subjects}
-                        value={sub1}
-                        onInputChange={(event, value) => setSub1(value)}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Subject 1" />
-                        )}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Autocomplete
-                        disablePortal
-                        options={subjects}
-                        value={sub2}
-                        onInputChange={(event, value) => setSub2(value)}
                         renderInput={(params) => (
                           <TextField {...params} label="Subject 2" />
                         )}
